@@ -28,6 +28,7 @@ import com.downloader.Progress;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
+import java.util.Locale;
 
 public class ActivityHome extends AppCompatActivity {
 
@@ -82,7 +83,7 @@ public class ActivityHome extends AppCompatActivity {
         askStoragePermission();
     }
 
-    private void askStoragePermission(){
+    private void askStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] permissionArrays = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             requestPermissions(permissionArrays, 123);
@@ -98,6 +99,7 @@ public class ActivityHome extends AppCompatActivity {
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
                     public void onStartOrResume() {
+                        btDownload.setEnabled(false);
                         txStatus.setText("Downloading...");
                         Log.d("logDownloadInfo", "Download Start/Resume");
 
@@ -106,6 +108,7 @@ public class ActivityHome extends AppCompatActivity {
                 .setOnPauseListener(new OnPauseListener() {
                     @Override
                     public void onPause() {
+                        btDownload.setEnabled(true);
                         txStatus.setText("Paused...");
                         Log.d("logDownloadInfo", "Download Paused");
 
@@ -114,6 +117,7 @@ public class ActivityHome extends AppCompatActivity {
                 .setOnCancelListener(new OnCancelListener() {
                     @Override
                     public void onCancel() {
+                        btDownload.setEnabled(true);
                         txStatus.setText("Cancelled...");
                         Log.d("logDownloadInfo", "Download Cancelled");
 
@@ -126,13 +130,14 @@ public class ActivityHome extends AppCompatActivity {
                         long progressPercent = progress.currentBytes * 100 / progress.totalBytes;
                         pbProgress.setProgress((int) progressPercent);
                         txStatus.setText(progressPercent + "%");
-                        txMbCurrent.setText(HelperProgress.getBytesToMBString(progress.currentBytes));
-                        txMbTotal.setText(HelperProgress.getBytesToMBString(progress.totalBytes));
+                        txMbCurrent.setText(getBytesToMBString(progress.currentBytes));
+                        txMbTotal.setText(getBytesToMBString(progress.totalBytes));
                     }
                 })
                 .start(new OnDownloadListener() {
                     @Override
                     public void onDownloadComplete() {
+                        btDownload.setEnabled(true);
                         txStatus.setText("File Downloaded!");
                         Log.d("logDownloadInfo", "Download Complete");
                     }
@@ -148,6 +153,10 @@ public class ActivityHome extends AppCompatActivity {
                 });
     }
 
+    private String getBytesToMBString(long bytes) {
+        return String.format(Locale.ENGLISH, "%.2fMB", bytes / (1024.00 * 1024.00));
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -158,4 +167,5 @@ public class ActivityHome extends AppCompatActivity {
             askStoragePermission();
         }
     }
+
 }
