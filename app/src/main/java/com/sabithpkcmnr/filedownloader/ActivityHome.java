@@ -163,6 +163,11 @@ public class ActivityHome extends AppCompatActivity {
         int storagePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (requestCode == 123 && storagePermission == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "Permission granted :)", Toast.LENGTH_SHORT).show();
+            File myFolder = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + getResources().getString(R.string.app_name));
+            if (!myFolder.exists()) {
+                myFolder.mkdirs();
+            }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             askStoragePermission();
         }

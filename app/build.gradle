@@ -25,7 +25,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'com.ixuea:AndroidDownloader:2.0.6'
     implementation 'com.mindorks.android:prdownloader:0.6.0'
 
     testImplementation 'junit:junit:4.13'
