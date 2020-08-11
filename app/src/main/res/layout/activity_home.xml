@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="30dp"
-            android:src="@drawable/ic_home_download" />
+            android:src="@drawable/ic_file_download" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Large"
