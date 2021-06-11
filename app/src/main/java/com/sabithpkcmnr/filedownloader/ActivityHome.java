@@ -1,14 +1,12 @@
 package com.sabithpkcmnr.filedownloader;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -76,7 +74,6 @@ public class ActivityHome extends AppCompatActivity {
                     etLink.setError("Enter valid link!");
 
                 } else {
-                    hideDeviceKeyboard(ActivityHome.this);
                     downloadFile(fileLink, fileName);
                 }
             }
@@ -94,9 +91,6 @@ public class ActivityHome extends AppCompatActivity {
     }
 
     private void downloadFile(String fileLink, String fileName) {
-        txStatus.setText("Waiting for response...");
-        pbProgress.setIndeterminate(true);
-
         String downloadLocation = new File(Environment.getExternalStorageDirectory() +
                 File.separator + getResources().getString(R.string.app_name)).getAbsolutePath();
 
@@ -105,7 +99,6 @@ public class ActivityHome extends AppCompatActivity {
                 .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                     @Override
                     public void onStartOrResume() {
-                        pbProgress.setIndeterminate(false);
                         btDownload.setEnabled(false);
                         txStatus.setText("Downloading...");
                         Log.d("logDownloadInfo", "Download Start/Resume");
@@ -115,7 +108,6 @@ public class ActivityHome extends AppCompatActivity {
                 .setOnPauseListener(new OnPauseListener() {
                     @Override
                     public void onPause() {
-                        pbProgress.setIndeterminate(false);
                         btDownload.setEnabled(true);
                         txStatus.setText("Paused...");
                         Log.d("logDownloadInfo", "Download Paused");
@@ -125,7 +117,6 @@ public class ActivityHome extends AppCompatActivity {
                 .setOnCancelListener(new OnCancelListener() {
                     @Override
                     public void onCancel() {
-                        pbProgress.setIndeterminate(false);
                         btDownload.setEnabled(true);
                         txStatus.setText("Cancelled...");
                         Log.d("logDownloadInfo", "Download Cancelled");
@@ -146,7 +137,6 @@ public class ActivityHome extends AppCompatActivity {
                 .start(new OnDownloadListener() {
                     @Override
                     public void onDownloadComplete() {
-                        pbProgress.setIndeterminate(false);
                         btDownload.setEnabled(true);
                         txStatus.setText("File Downloaded!");
                         Log.d("logDownloadInfo", "Download Complete");
@@ -154,7 +144,6 @@ public class ActivityHome extends AppCompatActivity {
 
                     @Override
                     public void onError(Error error) {
-                        pbProgress.setIndeterminate(false);
                         txStatus.setText("Error: " + error.getServerErrorMessage());
                         Log.d("logDownloadInfo", "Download Error: " + error.getServerErrorMessage());
                         Log.d("logDownloadInfo", "Download Error: " + error.getConnectionException());
@@ -166,15 +155,6 @@ public class ActivityHome extends AppCompatActivity {
 
     private String getBytesToMBString(long bytes) {
         return String.format(Locale.ENGLISH, "%.2fMB", bytes / (1024.00 * 1024.00));
-    }
-
-    public void hideDeviceKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        View view = activity.getCurrentFocus();
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override

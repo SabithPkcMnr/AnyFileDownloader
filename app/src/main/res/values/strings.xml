@@ -5,6 +5,7 @@
     <string name="text_file_name">MyDocument.pdf</string>
     <string name="hint_download_link">Add File Direct Download link</string>
     <string name="text_download_link">https://file-examples-com.github.io/uploads/2017/10/file-example_PDF_1MB.pdf</string>
-    <string name="info_about_downloader">This app can download files on Android 10 and above too!</string>
+    <string name="info_about_app_a">This app can download files on Android 10, 11, and S too and require no storage permission, how cool is that?</string>
+    <string name="info_about_app_b">File will be saved inside the Android/data/your.package.name/Documents/all_your_downloaded_files</string>
 
 </resources>
