@@ -4,8 +4,8 @@
     <string name="hint_file_name">Enter File Name with Extension</string>
     <string name="text_file_name">MyDocument.pdf</string>
     <string name="hint_download_link">Add File Direct Download link</string>
-    <string name="text_download_link">https://file-examples-com.github.io/uploads/2017/10/file-example_PDF_1MB.pdf</string>
-    <string name="info_about_app_a">This app can download files on Android 10, 11, and S too and require no storage permission, how cool is that?</string>
-    <string name="info_about_app_b">File will be saved inside the Android/data/your.package.name/Documents/all_your_downloaded_files</string>
+    <string name="text_download_link">https://www.clickdimensions.com/links/TestPDFfile.pdf</string>
+    <string name="info_about_app_a">This app can download files on Android 10, 11, and 12 and require no storage permission, how cool is that?</string>
+    <string name="info_about_app_b">Only valid HTTPS direct links will be valid and all the files will get stored inside the Android/data/your.package.name/Downloads/</string>
 
 </resources>

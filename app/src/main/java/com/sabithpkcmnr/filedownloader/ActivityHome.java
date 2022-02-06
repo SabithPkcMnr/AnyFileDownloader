@@ -35,6 +35,7 @@ public class ActivityHome extends AppCompatActivity {
     String fileLink;
     String fileName;
 
+    File dataFolder;
     ProgressBar pbProgress;
     EditText etName, etLink;
     MaterialButton btDownload;
@@ -53,13 +54,7 @@ public class ActivityHome extends AppCompatActivity {
         txStatus = findViewById(R.id.txDownloadStatus);
         pbProgress = findViewById(R.id.pbDownloadProgress);
 
-        //Create App Folder To Save Files - Start
-        File myFolder = new File(Environment.getExternalStorageDirectory() +
-                File.separator + getResources().getString(R.string.app_name));
-        if (!myFolder.exists()) {
-            myFolder.mkdirs();
-        }
-        //Create App Folder To Save Files - End
+        dataFolder = new File(ActivityConfig.getAppFolder(ActivityHome.this));
 
         btDownload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,21 +73,11 @@ public class ActivityHome extends AppCompatActivity {
                 }
             }
         });
-
-        //Let's ask for storage permission
-        askStoragePermission();
     }
 
-    private void askStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String[] permissionArrays = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            requestPermissions(permissionArrays, 123);
-        }
-    }
 
     private void downloadFile(String fileLink, String fileName) {
-        String downloadLocation = new File(Environment.getExternalStorageDirectory() +
-                File.separator + getResources().getString(R.string.app_name)).getAbsolutePath();
+        String downloadLocation = dataFolder.getAbsolutePath();
 
         PRDownloader.download(fileLink, downloadLocation, fileName)
                 .build()
@@ -158,19 +143,11 @@ public class ActivityHome extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        int storagePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (requestCode == 123 && storagePermission == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Permission granted :)", Toast.LENGTH_SHORT).show();
-            String currentPath = String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
-            final File newFolder = new File(currentPath.substring(0, currentPath.lastIndexOf("/")) +
-                    File.separator + getResources().getString(R.string.app_name));
-            if (!newFolder.exists()) {
-                newFolder.mkdir();
-            }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            askStoragePermission();
+    protected void onPostResume() {
+        super.onPostResume();
+        //Create App Folder To Save Files - Start
+        if (!dataFolder.exists()) {
+            dataFolder.mkdirs();
         }
     }
 
